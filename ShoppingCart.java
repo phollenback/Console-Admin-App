@@ -12,7 +12,7 @@ public class ShoppingCart {
 	 * Adds to current Cart List
 	 * @param s The object going into the Shopping Cart
 	 */
-	public void add(Saleable s)
+	public void addToCart(Saleable s)
 	{
 		// exercise function
 		System.out.println("I am in add()");		
@@ -38,18 +38,7 @@ public class ShoppingCart {
 		System.out.println("I am in checkout()");		
 	}
 	
-	/**
-	 * Clears out what has been added to the cart
-	 */
-	public void cancelOrder()
-	{
-		// exercise function
-		System.out.println("I am in cancelOrder()");		
-
-		// Clear what they added to the cart
-		currentCartList.clear();
-		
-	}
+	
 	
 	
 	
