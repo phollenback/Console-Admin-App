@@ -56,5 +56,22 @@ public class Saleable {
 		return quantity;
 	}
 	
+	/**
+	 * Sets the quantity property
+	 * @param quantity
+	 */
+	public void setQuantity(int quantity)
+	{
+		this.quantity = quantity;
+	}
+
+	@Override
+	public String toString() 
+	{
+		String format = name + " | " + description + " | " +  price + " | " + quantity;
+		return format;
+	}
+	
+	
 	
 }

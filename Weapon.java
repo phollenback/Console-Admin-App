@@ -1,16 +1,16 @@
 package finalHollenback;
+/**
+ * Type of Saleable that inherits saleable class
+ */
+public class Weapon extends Saleable {	
 
-public class Weapon extends Saleable {
-	
-	private String ammoType;
-	
-
-	public String getAmmoType() 
-	{
-		return ammoType;
-	}
-
-
+	/**
+	 * Constructor of Weapon
+	 * @param name of Saleable
+	 * @param description Of Saleable
+	 * @param price Of Saleable
+	 * @param quantity Of Saleable
+	 */
 	public Weapon(String name, String description, float price, int quantity) 
 	{
 		super(name, description, price, quantity);

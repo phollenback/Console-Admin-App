@@ -8,17 +8,29 @@ import java.util.ArrayList;
 public class ShoppingCart {
 	private ArrayList<Saleable> currentCartList = new ArrayList<Saleable>();
 	
+	
+	
 	/**
 	 * Adds to current Cart List
 	 * @param s The object going into the Shopping Cart
 	 */
-	public void addToCart(Saleable s)
+	public void addToCart(Saleable item)
 	{
 		// exercise function
-		System.out.println("I am in add()");		
+		System.out.println("I am in addToCart()");		
 
 		//add to shopping cart list with object parameter
-		currentCartList.add(s);
+		currentCartList.add(item);
+	}
+	
+	/**
+	 * remove added item from cart
+	 * @param itemIdx Specified item to remove
+	 */
+	public void removeFromCart(int itemIdx) 
+	{
+		// remove item from cart
+		currentCartList.remove(itemIdx);
 	}
 	
 	/**
@@ -29,14 +41,9 @@ public class ShoppingCart {
 		System.out.println("I am in viewCart()");
 	}
 	
-	/**
-	 * Begins checkout process, prompts for confirmation
-	 */
-	public void checkout()
-	{
-		// excercise function
-		System.out.println("I am in checkout()");		
-	}
+	
+
+	
 	
 	
 	
