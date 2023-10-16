@@ -11,9 +11,9 @@ public class Weapon extends Saleable {
 	 * @param price Of Saleable
 	 * @param quantity Of Saleable
 	 */
-	public Weapon(String name, String description, float price, int quantity) 
+	public Weapon(int Id, String name, String description, float price, int quantity) 
 	{
-		super(name, description, price, quantity);
+		super(Id, name, description, price, quantity);
 	}
 
 }

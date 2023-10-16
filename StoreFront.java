@@ -1,7 +1,7 @@
 package finalHollenback;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -9,60 +9,150 @@ import java.util.Scanner;
  */
 public class StoreFront {
 	
-	static Inventory inv = new Inventory();
-	static ShoppingCart cart = new ShoppingCart();
+	private	Inventory inv;
+	private ShoppingCart cart;
+
+	
 	/**
-	 * Creates One inventory and one Cart
+	 * Initializes the objects used in the store
 	 */
-	private static void initializeStore()
+	private void initializeStore()
 	{
-		
-		
-		
+		// create Inventory and cart
+		inv = new Inventory();
+		cart = new ShoppingCart();
+		// initialize each list
+		inv.initializeInventory();
+		cart.initializeCart();
 	}
+	
 	/**
 	 * Prints the options list
 	 */
-	private static void printMenu() 
+	private void printMenu() 
 	{
 		//print menu
 		System.out.println("How would you like to proceed?");
-		System.out.println("(1)View Inventory");
+		System.out.println("(1)View current Inventory");
 		System.out.println("(2)Purchase an item");
-		System.out.println("(3)Cancel a Purchase");
-		System.out.println("(4)Leave Store");
+		System.out.println("(3)Cancel a purchase");
+		System.out.println("(4)View Cart");
+		System.out.println("(5)Clear Cart");
+		System.out.println("(6)Leave Store");
 	}
 	/**
-	 * 
-	 * Initial inventory within the store front
+	 * Process of printing, sorting, and updating list id's
+	 * @param list ArrayList from inventory or shopping cart
 	 */
-	private static void printInventory()
+	private void printList(ArrayList<Saleable> list)
 	{
-		// print inventory
-		int order = 1;
-		// loop over each item
-		for(Saleable item : inv.returnInventory())
+		// if nothing is passed in
+		if(list == null)
 		{
-			// print order
-			System.out.print(order + ". ");
-			// print item formatted
-			System.out.println(item.toString());
-			// increment order
-			order++;
+			// print error
+			System.out.println("Cart is Empty!");
 		}
-
+		else
+		{
+			// sort before printing
+			Collections.sort(list);
+			// initialize array order
+			int order = 1;
+			// loop over each item
+			for(Saleable item : list)
+			{
+				// set id according to order
+				item.setId(order);
+				// print item formatted
+				System.out.println(item.toString());
+				// increment order
+				order++;
+			}
+			
+		}
+		
 
 	}
 	
 	/**
-	 * Clears out what has been added to the cart
-
+	 * Begins purchase item process
 	 */
-	private static void cancelPurchase()
+	private void purchaseItem()
 	{
-		// exercise function
-		System.out.println("I am in cancelOrder()");		
-
+		Scanner scnr = new Scanner(System.in);
+		// get inventory
+		ArrayList<Saleable> currentInv = inv.getInventory();
+		
+		// prompt user input
+		System.out.println("What item would you like to purchase?");
+		// print inventory
+		printList(currentInv);
+		// gather which item
+		int itemIdx = scnr.nextInt();
+		// Ask for quantity
+		System.out.println("How many would you like to purchase?");
+		// gather quantity
+		int quantity = scnr.nextInt();
+		// Double check if user wants to purchase
+		System.out.println("Are you sure you want to add this item to your cart? (1)Yes (2)No");
+		// gather input
+		int input = scnr.nextInt();
+		
+		// If answer is no
+		if(input == 2)
+		{
+			// acknowledge decision
+			System.out.println("No problem.");
+		}
+		// If answer is yes, remove item and add to cart
+		else
+		{
+			// if remove item is successful
+			if(inv.removeItem(itemIdx, quantity))
+			{
+				// clone the item
+				Saleable cartItem = new Saleable(currentInv.get(itemIdx - 1));
+				// pass into cart
+				cart.addToCart(cartItem, quantity);
+				// Update inventory and continue
+				System.out.println("Great! Added to cart.");
+				System.out.println();
+			}
+			// if removing the item is unsuccessful
+			else
+			{
+				// Throw error
+				System.out.println("You may have taken more than we can provide. Please try again.");
+				// restart the process
+				purchaseItem();
+			}
+ 			
+		}
+	}
+	/**
+	 * Cancel a purchase from the cart
+	 */
+	private void cancelPurchase()
+	{
+		Scanner scnr = new Scanner(System.in);
+		
+		// Ask which item they are cancelling
+		System.out.println("What would you like to cancel?");
+		// print options
+		printList(cart.returnCart());
+		// gather id number
+		int idx = scnr.nextInt();
+		// how many are they cancelling
+		System.out.println("How many would you like to remove?");
+		// gather input
+		int quantity = scnr.nextInt();
+			
+		// remove number of items from cart
+		cart.removeFromCart(idx,quantity);
+			
+		
+		// add to inventory
+		inv.addItem(idx, quantity);
 		
 	}
 	
@@ -71,16 +161,17 @@ public class StoreFront {
 	 * @param args Main method arguments
 	 */
 	public static void main(String[] args) 
-	{
-		// initialize inventory
-		inv.initializeInventory();
-		// create scanner instance
+	{		
+		// Create scanner
 		Scanner scnr = new Scanner(System.in);
-		
+		// Create store front to eliminate static
+		StoreFront store = new StoreFront();
+		// initialize store
+		store.initializeStore();
 		// welcome message
 		System.out.println("Welcome to Phoenix's very own weapon store.");
 		// show menu
-		printMenu();
+		store.printMenu();
 		//gather input
 		int input = scnr.nextInt();
 		// initialize if the store is 'live' or not
@@ -93,72 +184,54 @@ public class StoreFront {
 			{
 				// view inventory
 				case 1: 
-					printInventory();
-					// prompt next step
-					System.out.println("Would you like to make a purchase(Yes(1) or No(2)");
-					// gather input
-					input = scnr.nextInt();
+					// print inventory
+					store.printList(store.inv.getInventory());
 					// Prompt next steps
-					printMenu();
+					store.printMenu();
 					// gather Input
 					input = scnr.nextInt();
 					break;
 				// Make a purchase
 				case 2:
-					// prompt input
-					System.out.println("What item would you like to purchase?");
-					// print inventory
-					printInventory();
-					
-					// gather input
-					int itemIdx = scnr.nextInt();
-					
-					// complete purchase process
-					// add purchase item to cart
-					cart.addToCart(inv.purchaseItem(itemIdx - 1));
-					
-					// Double check if user wants to purchase
-					System.out.println("Are you sure you want to add this item to your cart?");
-					System.out.println("(1)Yes (2)No");
-					
-					// gather input
-					input = scnr.nextInt();
-					
-					// If answer is no
-					if(input == 2)
-					{
-						// re-add to inventory
-						inv.addItem(itemIdx - 1);
-						// Tell user it was taken out of cart
-						System.out.println("Item has been cleared from your cart.");
-						System.out.println();
-					}
-					else
-					{
-						// take added item out of cart
-						cart.removeFromCart(itemIdx);
-						// Update inventory and continue
-						System.out.println("Great! Added to cart.");
-						System.out.println();
-					}
-					
-					
-					
-					// Prompt next steps
-					printMenu();
-					// gather input
+					// start purchase process
+					store.purchaseItem();
+					// prompt next step
+					store.printMenu();
+					// gather next menu option
 					input = scnr.nextInt();
 					break;
-					
-				case 3:	
-					// complete cancel order process
-					cancelPurchase();
-					// Prompt next steps
-					printMenu();
-					// gather input
+				// cancel purchase
+				case 3: 
+					// begin cancel process
+					store.cancelPurchase();
+					// prompt next step
+					store.printMenu();
+					// gather next menu option
 					input = scnr.nextInt();
 					break;
-				case 4: 
+			    // view cart
+				case 4:
+					// print cart
+					store.printList(store.cart.returnCart());
+					// prompt next step
+					store.printMenu();
+					// gather next menu option
+					input = scnr.nextInt();
+					break;
+				// clear cart
+				case 5:
+					// clear cart
+					store.cart.clearCart();
+					// print list to check if null
+					store.printList(store.cart.returnCart());
+					// print menu
+					store.printMenu();
+					// gather next menu option
+					input = scnr.nextInt();
+					break;
+				// leave store
+				case 6:
+					// breaks store
 					live = false;
 					break;
 			}

@@ -6,42 +6,84 @@ import java.util.ArrayList;
  * Object that manages the shopping cart list that deals with checkout and canceling orders
  */
 public class ShoppingCart {
-	private ArrayList<Saleable> currentCartList = new ArrayList<Saleable>();
-	
-	
+		
+	private ArrayList<Saleable> currentCartList;
+
+	/**
+	 * Creates array list of salable's for the cart
+	 */
+	public void initializeCart()
+	{
+		// initialize cart
+		currentCartList = new ArrayList<Saleable>();
+		
+	}
 	
 	/**
-	 * Adds to current Cart List
-	 * @param s The object going into the Shopping Cart
+	 * Adds a item to cart and sets its quantity
+	 * @param item Item that is passed into list
+	 * @param quantity Sets quantity for salable object
 	 */
-	public void addToCart(Saleable item)
-	{
-		// exercise function
-		System.out.println("I am in addToCart()");		
-
+	public void addToCart(Saleable item, int quantity)
+	{	
+		// set new quantity of one
+		item.setQuantity(quantity);
 		//add to shopping cart list with object parameter
 		currentCartList.add(item);
 	}
 	
 	/**
-	 * remove added item from cart
-	 * @param itemIdx Specified item to remove
+	 * Removes a item from the cart list
+	 * @param idx index Index of item to remove
+	 * @param quantity Amount to remove from cart
 	 */
-	public void removeFromCart(int itemIdx) 
+	public void removeFromCart(int idx, int quantity)  
 	{
-		// remove item from cart
-		currentCartList.remove(itemIdx);
+		// loop over all items
+		for(Saleable item : currentCartList)
+		{
+			// if the index matches id
+			if(item.getId() == idx)
+			{
+				// set proper index
+				idx = item.getId() - 1;
+			}
+		}
+		// remove number of item from cart
+		currentCartList.get(idx).setQuantity(currentCartList.get(idx).getQuantity() - quantity);
+		
+		// check if current quantity is 0
+		if(currentCartList.get(idx).getQuantity() <= 0)
+		{
+			// if the quantity equals 0 then remove from list
+			currentCartList.remove(idx);
+		}
 	}
 	
 	/**
-	 * View the current cart inventory
+	 * Returns current contents of cart list
+	 * @return
 	 */
-	public void viewCart()
+	public ArrayList<Saleable> returnCart()
 	{
-		System.out.println("I am in viewCart()");
+		// if cart is empty return out print
+		if(currentCartList.size() <= 0)
+		{
+			// return "error"
+			return null;
+		}
+		return currentCartList;
 	}
 	
 	
+	/**
+	 * Remove all contents of cart
+	 */
+	public void clearCart()
+	{
+		// clear cart
+		currentCartList.clear();
+	}
 
 	
 	

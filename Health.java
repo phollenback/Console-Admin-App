@@ -13,9 +13,9 @@ public class Health extends Saleable{
 	 * @param price of saleable
 	 * @param quantity of saleable
 	 */
-	public Health(String name, String description, float price, int quantity)
+	public Health(int Id, String name, String description, float price, int quantity)
 	{
-		super(name, description, price, quantity);
+		super(Id, name, description, price, quantity);
 	}
 
 }
