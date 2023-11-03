@@ -62,7 +62,7 @@ public class ShoppingCart {
 	
 	/**
 	 * Returns current contents of cart list
-	 * @return
+	 * @return current Cart List
 	 */
 	public ArrayList<Saleable> returnCart()
 	{

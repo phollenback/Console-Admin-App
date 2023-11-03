@@ -8,6 +8,7 @@ public class Health extends Saleable{
 	
 	/**
 	 * Inherits Saleable
+	 * @param Id Id of salable
 	 * @param name of saleable
 	 * @param description of saleable
 	 * @param price of saleable

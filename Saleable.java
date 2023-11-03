@@ -1,10 +1,22 @@
 package finalHollenback;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Saleable object that will eventually make up the shopping cart and inventory lists
  */
-public class Saleable implements  Comparable<Saleable>
+@JsonTypeInfo(
+	    use = JsonTypeInfo.Id.NAME,
+	    include = JsonTypeInfo.As.PROPERTY,
+	    property = "type"
+	)
+	@JsonSubTypes({
+	    @JsonSubTypes.Type(value = Armor.class, name = "armor"),
+	    @JsonSubTypes.Type(value = Health.class, name = "health"),
+	    @JsonSubTypes.Type(value = Weapon.class, name = "weapon")
+	})
+public class Saleable implements Comparable<Saleable>
 {
 	private int Id;
 	private String name;
@@ -70,11 +82,30 @@ public class Saleable implements  Comparable<Saleable>
 	}
 	
 	/**
+	 * Sets name property
+	 * @param name Set to this name
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	/**
 	 * Gets the description property
 	 * @return Current description property
 	 */
-	public String getDescription() {
+	public String getDescription() 
+	{
 		return description;
+	}
+	
+	/**
+	 * Sets description for object
+	 * @param desc Passes in new description
+	 */
+	public void setDescription(String desc)
+	{
+		this.description = desc;
 	}
 	
 	/**
@@ -83,6 +114,15 @@ public class Saleable implements  Comparable<Saleable>
 	 */
 	public float getPrice() {
 		return price;
+	}
+	
+	/**
+	 * Sets new price property
+	 * @param price New price variable
+	 */
+	public void setPrice(float price)
+	{
+		this.price = price;
 	}
 	
 	/**

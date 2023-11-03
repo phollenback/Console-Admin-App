@@ -7,6 +7,7 @@ public class Armor extends Saleable {
 	
 	/**
 	 * Inherits Saleable
+	 * @param Id Id of salable
 	 * @param name OF saleable
 	 * @param description of Saleable
 	 * @param price Of Saleable
