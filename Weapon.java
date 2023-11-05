@@ -1,7 +1,11 @@
 package finalHollenback;
+
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /**
  * Type of Saleable that inherits saleable class
  */
+//@JsonTypeName("weapon")
 public class Weapon extends Saleable {	
 
 	/**

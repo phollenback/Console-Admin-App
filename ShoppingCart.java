@@ -26,10 +26,29 @@ public class ShoppingCart {
 	 */
 	public void addToCart(Saleable item, int quantity)
 	{	
-		// set new quantity of one
-		item.setQuantity(quantity);
-		//add to shopping cart list with object parameter
-		currentCartList.add(item);
+		// initialize variable
+		boolean match = false;
+		// check all items in current cart list
+		for(Saleable cart : currentCartList)
+		{
+			// if the item passed in is already in the cart
+			if(cart.getName() == item.getName())
+			{
+				// add the current quantity of the item with the passed in quantity
+				cart.setQuantity(cart.getQuantity() + quantity);
+				match = true;
+			}
+		}
+		// if match is not true
+		if(!match)
+		{
+			// set new quantity of added item
+			item.setQuantity(quantity);
+			// add to shopping cart list with object parameter
+			currentCartList.add(item);
+		}
+		
+		
 	}
 	
 	/**

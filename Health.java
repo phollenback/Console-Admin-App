@@ -1,8 +1,11 @@
 package finalHollenback;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /**
  * Type of saleable that inherits saleable class
  */
+//@JsonTypeName("health")
 public class Health extends Saleable{
 	
 	

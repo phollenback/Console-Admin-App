@@ -14,11 +14,11 @@ public class Inventory {
 	 */
 	public void initializeInventory()
 	{
-		FileService fs = new FileService();
+		JSON json = new JSON();
 		
 		
 		
-		inventoryList = fs.readData("inventory.json");
+		inventoryList = json.readData("inventory.json");
 		
 		//--------------------------------------------
 		// hopefully dont need any more
@@ -35,7 +35,7 @@ public class Inventory {
 		// may use again
 		//---------------------------------------------
 		
- 	//	fs.writeData("inventory.json", inventoryList);
+// 		json.writeData("inventory.json", inventoryList);
 				
 	}
 	
@@ -67,12 +67,6 @@ public class Inventory {
 
 			// show an error
 			return false;
-		}
-		// if the quantity equals zero
-		else if(inventoryList.get(index).getQuantity() == 0)
-		{
-			// remove item from list
-			inventoryList.remove(index);
 		}
 		// return with no error
 		return true;
