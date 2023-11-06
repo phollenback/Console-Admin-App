@@ -1,12 +1,17 @@
 package finalHollenback;
+
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /**
  * Type of saleable that inherits saleable class
  */
+//@JsonTypeName("armor")
 public class Armor extends Saleable {
 	
 	
 	/**
 	 * Inherits Saleable
+	 * @param Id Id of salable
 	 * @param name OF saleable
 	 * @param description of Saleable
 	 * @param price Of Saleable

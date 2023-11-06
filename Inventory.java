@@ -1,6 +1,10 @@
 package finalHollenback;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import Exceptions.DataHandlingException;
+import Exceptions.InventoryErrorException;
 /**
  * Manages the inventory of the store, keeps it all in array list of 'Saleable' objects
  */
@@ -10,29 +14,34 @@ public class Inventory {
 
 	/**
 	 * Setup inventory with multiple weapons, armor and health
+	 * @throws InventoryErrorException Can't gather data from database
 	 */
-	public void initializeInventory()
+	public void initializeInventory() throws InventoryErrorException
 	{
-		inventoryList = new ArrayList<Saleable>();
-		// hard coded inventory
-		// 2 weapons
-		inventoryList.add(new Weapon(1,"Pocket Knife","Small and Powerful.", (float)5.99, 4));
-		inventoryList.add(new Weapon(2,"Pistol","Packs a Punch.", (float)12.99, 13));
-		// 2 armors
-		inventoryList.add(new Armor(3,"Head Gear","Only covers your face.", (float)17.99, 7));
-		inventoryList.add(new Armor(4,"Back Plate","You will probably win with this.", (float)79.99, 3));
-		// Health
-		inventoryList.add(new Health(5,"Health Potion","Holds 50 HP.", (float)17.99, 7));
+		// file service instance
+		JSON json = new JSON();
+		
+		try
+		{
+			// gather data from external json
+			inventoryList = json.readData("inventory.json");
+		}
+		catch (InventoryErrorException e)
+		{
+			// throw error to SF if there is an issue
+			throw new InventoryErrorException(e.getMessage());
+		}
 				
 	}
 	
 	/**
 	 * Remove item from Saleable quantity
 	 * @param quantity Set the quantity of 
-	 * @param item Saleable passed in
+	 * @param index selected item
 	 * @return New item with updated quantity
+	 * @throws DataHandlingException Not enough stock of item for user to make purchase
 	 */
-	public boolean removeItem(int index, int quantity)
+	public Saleable removeItem(int index, int quantity) throws DataHandlingException
 	{
 		// loop over all items
 		for(Saleable item : inventoryList)
@@ -46,23 +55,19 @@ public class Inventory {
 		}
 		// update quantity
 		inventoryList.get(index).setQuantity(inventoryList.get(index).getQuantity() - quantity);
-		// if the quantity is 0 or less
+		// if the quantity is less than 0 
 		if(inventoryList.get(index).getQuantity() < 0)
 		{
 			// revert quantity
 			inventoryList.get(index).setQuantity(inventoryList.get(index).getQuantity() + quantity);
 
-			// show an error
-			return false;
+			// throw an error
+			throw new DataHandlingException("Not enough of this item in stock. Please Try Again.");
 		}
-		// if the quantity equals zero
-		else if(inventoryList.get(index).getQuantity() == 0)
-		{
-			// remove item from list
-			inventoryList.remove(index);
-		}
-		// return with no error
-		return true;
+		// clone item
+		Saleable clone = new Saleable(inventoryList.get(index));
+		// return cloned item
+		return clone;
 	}
 	
 		
@@ -95,6 +100,33 @@ public class Inventory {
 	public ArrayList<Saleable> getInventory()
 	{
 		return inventoryList;
+	}
+	
+	/**
+	 * Save inventory at the end of SF main method
+	 * @throws DataHandlingException Problem with data type
+	 * @throws InventoryErrorException Problem saving inventory
+	 */
+	public void saveInventory() throws InventoryErrorException, DataHandlingException
+	{
+		// create file service instance
+		JSON json = new JSON();
+		// write data once store closes
+		try
+		{
+			// try to save data to json
+			json.writeData("inventory.json", inventoryList);
+		} 
+		catch (InventoryErrorException e) 
+		{
+			// problem updating inventory
+			throw new InventoryErrorException(e.getMessage());
+		}
+		catch (DataHandlingException e)
+		{
+			// problem finding
+			throw new DataHandlingException(e.getMessage());
+		}
 	}
 	
 	

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import Exceptions.DataHandlingException;
+import Exceptions.InventoryErrorException;
+
 /**
  * Class with 'main' method also prints the directory menu
  */
@@ -22,7 +25,14 @@ public class StoreFront {
 		inv = new Inventory();
 		cart = new ShoppingCart();
 		// initialize each list
-		inv.initializeInventory();
+		try
+		{
+			inv.initializeInventory();
+		}
+		catch(InventoryErrorException e)
+		{
+			System.out.println(e.getMessage());
+		}
 		cart.initializeCart();
 	}
 	
@@ -106,28 +116,23 @@ public class StoreFront {
 		}
 		// If answer is yes, remove item and add to cart
 		else
-		{
-			// if remove item is successful
-			if(inv.removeItem(itemIdx, quantity))
+		{		
+			try 
 			{
-				// clone the item
-				Saleable cartItem = new Saleable(currentInv.get(itemIdx - 1));
-				// pass into cart
-				cart.addToCart(cartItem, quantity);
+				
+				// pass into cart with cloned item from remove item
+				cart.addToCart(inv.removeItem(itemIdx, quantity), quantity);
 				// Update inventory and continue
 				System.out.println("Great! Added to cart.");
 				System.out.println();
 			}
-			// if removing the item is unsuccessful
-			else
+			catch(DataHandlingException e)
 			{
-				// Throw error
-				System.out.println("You may have taken more than we can provide. Please try again.");
+				System.out.println(e.getMessage());
 				// restart the process
 				purchaseItem();
 			}
- 			
-		}
+		}	
 	}
 	/**
 	 * Cancel a purchase from the cart
@@ -231,6 +236,19 @@ public class StoreFront {
 					break;
 				// leave store
 				case 6:
+					try 
+					{
+						// save back to file
+						store.inv.saveInventory();
+					} 
+					catch (DataHandlingException e)
+					{
+						System.out.println(e.getMessage());
+					}
+					catch(InventoryErrorException e)
+					{
+						System.out.println(e.getMessage());
+					}
 					// breaks store
 					live = false;
 					break;
