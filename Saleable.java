@@ -6,16 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 /**
  * Saleable object that will eventually make up the shopping cart and inventory lists
  */
-//@JsonTypeInfo(
-//	    use = JsonTypeInfo.Id.NAME,
-//	    include = JsonTypeInfo.As.PROPERTY,
-//	    property = "@type"
-//	)
-//	@JsonSubTypes({
-//	    @JsonSubTypes.Type(value = Armor.class, name = "armor"),
-//	    @JsonSubTypes.Type(value = Health.class, name = "health"),
-//	    @JsonSubTypes.Type(value = Weapon.class, name = "weapon")
-//	})
 public class Saleable implements Comparable<Saleable>
 {
 	private int Id;

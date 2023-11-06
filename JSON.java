@@ -7,84 +7,69 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import Exceptions.DataHandlingException;
+import Exceptions.InventoryErrorException;
+
+/**
+ * class that reads json files
+ */
 public class JSON implements FileService
 {
-	// read from json file
-		public ArrayList<Saleable> readData (String name)
+
+	/**
+	 * Read data of input name 
+	 */
+	public ArrayList<Saleable> readData(String name) throws InventoryErrorException
+	{
+		ArrayList<Saleable> currentInventory = null;
+		//open the file to read
+		File file = new File(name);
+			
+		try
 		{
-			ArrayList<Saleable> currentInventory = null;
-			//open the file to read
-			File file = new File(name);
-			
-			try
-			{
-				// create object mapper instance
-				ObjectMapper om = new ObjectMapper();
-				// read array of values from json file
-				Saleable[] items = om.readValue(file, Saleable[].class);
-				// convert to array list
-			    currentInventory = new ArrayList(Arrays.asList(items));		
-				// return inventory
-				return currentInventory;
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			
-			// return Array List
-			// likely null if returned here
+			// create object mapper instance
+			ObjectMapper om = new ObjectMapper();
+			// read array of values from json file
+			Saleable[] items = om.readValue(file, Saleable[].class);
+			// convert to array list
+			currentInventory = new ArrayList(Arrays.asList(items));
+			// return inventory
 			return currentInventory;
 		}
-		// write to json file
-		public boolean writeData (String name, ArrayList<Saleable> inventory)
+		catch(IOException e)
 		{
-			PrintWriter pw;
-			
-			try
+			// throw custom exception up to Inventory class
+			throw new InventoryErrorException("ERROR: Could not gather data from Database.");
+		}
+	}
+		
+		/**
+		 * Write data to source which is passed in
+		 */
+		public void writeData (String name, ArrayList<Saleable> inventory) throws DataHandlingException, InventoryErrorException
+		{
+			// create mapper and file
+			ObjectMapper mapper = new ObjectMapper();
+			File file = new File(name);
+			try 
 			{
-				// create a file File to write
-				File file = new File(name);
-				FileWriter fw = new FileWriter(file);
-				pw = new PrintWriter(fw);
-				
-				// Write car as JSON
-				ObjectMapper objectMapper = new ObjectMapper();
-				String json = objectMapper.writeValueAsString(inventory);
-				pw.println(json);
-				
-				// cleanup
-				pw.close();
+				// write to file with specific formatting
+				mapper.writerWithDefaultPrettyPrinter().writeValue(file, inventory);
 			} 
-			catch (IOException e) 
+			catch (JsonProcessingException e) 
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// Unable to move to the database
+				throw new DataHandlingException("ERROR: Problem converting inventory to database.");
+			} 
+			catch (IOException e)
+			{
+				// Unable to update inventory
+				throw new InventoryErrorException("ERROR: Could not access database.");
 			}
 			
-			//---------------------------------------------
-			// Writing to the file, inserting initial data
-			//---------------------------------------------
-//		PrintWriter pw;
-//			
-//			try {		
-//				File file = new File("inventory.json");
-//				
-//				ObjectMapper om = new ObjectMapper();
-//				om.writeValue(file, inventory);
-//			} 
-//			 catch (IOException e) 
-//			{
-//				e.printStackTrace();
-//			}
 			
-			//-------------------------------------------
-			// DONT USE
-			//-------------------------------------------
-			
-			return false;
-
 		}
 }
