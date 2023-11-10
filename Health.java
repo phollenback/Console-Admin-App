@@ -1,4 +1,4 @@
-package finalHollenback;
+package saleable.type;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -20,6 +20,14 @@ public class Health extends Saleable{
 	public Health(int Id, String name, String description, float price, int quantity)
 	{
 		super(Id, name, description, price, quantity);
+	}
+	
+	/**
+	 * Default constructor
+	 */
+	public Health()
+	{
+		super();
 	}
 
 }

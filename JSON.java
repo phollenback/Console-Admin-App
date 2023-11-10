@@ -7,11 +7,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Exceptions.DataHandlingException;
 import Exceptions.InventoryErrorException;
+import saleable.type.Saleable;
 
 /**
  * class that reads json files
@@ -21,8 +25,9 @@ public class JSON implements FileService
 
 	/**
 	 * Read data of input name 
+	 * @throws InventoryErrorException  Problem gathering from database
 	 */
-	public ArrayList<Saleable> readData(String name) throws InventoryErrorException
+	public ArrayList<Saleable> readData(String name) throws InventoryErrorException 
 	{
 		ArrayList<Saleable> currentInventory = null;
 		//open the file to read
@@ -51,14 +56,21 @@ public class JSON implements FileService
 		 */
 		public void writeData (String name, ArrayList<Saleable> inventory) throws DataHandlingException, InventoryErrorException
 		{
-			// create mapper and file
-			ObjectMapper mapper = new ObjectMapper();
-			File file = new File(name);
+			PrintWriter pw = null;
+			
 			try 
 			{
-				// write to file with specific formatting
-				mapper.writerWithDefaultPrettyPrinter().writeValue(file, inventory);
-			} 
+				// Create file to write to
+				File file = new File(name);
+				FileWriter fw = new FileWriter(file);
+				pw = new PrintWriter(fw);
+				// om instance
+				ObjectMapper mapper = new ObjectMapper();
+				// write with pretty printer + string
+				String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(inventory.toArray(Saleable[]::new));
+				// write string
+				pw.println(json);				
+			}
 			catch (JsonProcessingException e) 
 			{
 				// Unable to move to the database
@@ -68,6 +80,11 @@ public class JSON implements FileService
 			{
 				// Unable to update inventory
 				throw new InventoryErrorException("ERROR: Could not access database.");
+			}
+			finally
+			{
+				// close printer no matter what
+				pw.close();
 			}
 			
 			

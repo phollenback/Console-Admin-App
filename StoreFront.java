@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import Exceptions.DataHandlingException;
 import Exceptions.InventoryErrorException;
+import saleable.type.Saleable;
 
 /**
  * Class with 'main' method also prints the directory menu
@@ -15,9 +16,9 @@ public class StoreFront {
 	private	Inventory inv;
 	private ShoppingCart cart;
 
-	
 	/**
 	 * Initializes the objects used in the store
+	 * @throws DataHandlingException 
 	 */
 	private void initializeStore()
 	{
@@ -27,10 +28,12 @@ public class StoreFront {
 		// initialize each list
 		try
 		{
+			// trys to gather inventory
 			inv.initializeInventory();
 		}
 		catch(InventoryErrorException e)
 		{
+			// problem gathering inventory
 			System.out.println(e.getMessage());
 		}
 		cart.initializeCart();
@@ -64,8 +67,10 @@ public class StoreFront {
 		}
 		else
 		{
-			// sort before printing
+			// sort before printing / ASC
 			Collections.sort(list);
+			// DESC
+		//	Collections.reverse(list);
 			// initialize array order
 			int order = 1;
 			// loop over each item
@@ -80,8 +85,6 @@ public class StoreFront {
 			}
 			
 		}
-		
-
 	}
 	
 	/**
@@ -119,7 +122,6 @@ public class StoreFront {
 		{		
 			try 
 			{
-				
 				// pass into cart with cloned item from remove item
 				cart.addToCart(inv.removeItem(itemIdx, quantity), quantity);
 				// Update inventory and continue
@@ -164,8 +166,9 @@ public class StoreFront {
 	/**
 	 * Drives the program
 	 * @param args Main method arguments
+	 * @throws DataHandlingException 
 	 */
-	public static void main(String[] args) 
+	public static void main(String[] args)
 	{		
 		// Create scanner
 		Scanner scnr = new Scanner(System.in);

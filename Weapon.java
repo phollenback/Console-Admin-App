@@ -1,4 +1,4 @@
-package finalHollenback;
+package saleable.type;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -19,6 +19,14 @@ public class Weapon extends Saleable {
 	public Weapon(int Id, String name, String description, float price, int quantity) 
 	{
 		super(Id, name, description, price, quantity);
+	}
+	
+	/**
+	 * Default Constructor
+	 */
+	public Weapon()
+	{
+		super();
 	}
 
 }

@@ -1,11 +1,20 @@
-package finalHollenback;
+package saleable.type;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 /**
  * Saleable object that will eventually make up the shopping cart and inventory lists
  */
+@JsonTypeInfo (
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "@type")
+	@JsonSubTypes({
+			@Type(value = Armor.class, name = "armor"),
+			@Type(value = Weapon.class, name = "weapon"),
+			@Type(value = Health.class, name = "health")}
+			)
 public class Saleable implements Comparable<Saleable>
 {
 	private int Id;
@@ -166,10 +175,11 @@ public class Saleable implements Comparable<Saleable>
 		// if compare int is more than 1
 		if(comp > 0) return 1;
 		// return even
+		// check if price is less than comparing to
+		if(this.price < other.price) return -1;
+		// check if its more
+		if(this.price > other.price) return 1;
+		// return equal
 		return 0;
-	}
-	
-	
-	
-	
+	}	
 }

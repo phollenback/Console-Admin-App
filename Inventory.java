@@ -1,10 +1,15 @@
 package finalHollenback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Exceptions.DataHandlingException;
 import Exceptions.InventoryErrorException;
+import saleable.type.Armor;
+import saleable.type.Health;
+import saleable.type.Saleable;
+import saleable.type.Weapon;
 /**
  * Manages the inventory of the store, keeps it all in array list of 'Saleable' objects
  */
@@ -15,6 +20,7 @@ public class Inventory {
 	/**
 	 * Setup inventory with multiple weapons, armor and health
 	 * @throws InventoryErrorException Can't gather data from database
+	 * @throws DataHandlingException 
 	 */
 	public void initializeInventory() throws InventoryErrorException
 	{
@@ -24,7 +30,9 @@ public class Inventory {
 		try
 		{
 			// gather data from external json
-			inventoryList = json.readData("inventory.json");
+			inventoryList = json.readData("inventory.json");		
+			
+		//	json.writeData("inventory.json", inventoryList);
 		}
 		catch (InventoryErrorException e)
 		{

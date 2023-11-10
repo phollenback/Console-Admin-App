@@ -2,6 +2,8 @@ package finalHollenback;
 
 import java.util.ArrayList;
 
+import saleable.type.Saleable;
+
 /**
  * Object that manages the shopping cart list that deals with checkout and canceling orders
  */

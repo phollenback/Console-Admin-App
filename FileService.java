@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Exceptions.DataHandlingException;
 import Exceptions.InventoryErrorException;
+import saleable.type.Saleable;
 /**
  * Interface for whichever form of data input there is
  */
