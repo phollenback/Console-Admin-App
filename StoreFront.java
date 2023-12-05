@@ -15,6 +15,7 @@ public class StoreFront {
 	
 	private	Inventory inv;
 	private ShoppingCart cart;
+	private ServerThread thread;
 
 	/**
 	 * Initializes the objects used in the store
@@ -22,9 +23,12 @@ public class StoreFront {
 	 */
 	private void initializeStore()
 	{
-		// create Inventory and cart
+		// create Inventory and cart and begin thread
 		inv = new Inventory();
 		cart = new ShoppingCart();
+		thread = new ServerThread();
+		// run thread
+		thread.run();
 		// initialize each list
 		try
 		{
@@ -157,7 +161,6 @@ public class StoreFront {
 		// remove number of items from cart
 		cart.removeFromCart(idx,quantity);
 			
-		
 		// add to inventory
 		inv.addItem(idx, quantity);
 		
@@ -166,7 +169,6 @@ public class StoreFront {
 	/**
 	 * Drives the program
 	 * @param args Main method arguments
-	 * @throws DataHandlingException 
 	 */
 	public static void main(String[] args)
 	{		

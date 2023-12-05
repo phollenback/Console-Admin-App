@@ -1,9 +1,12 @@
 package finalHollenback;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,6 +25,9 @@ import saleable.type.Saleable;
  */
 public class JSON implements FileService
 {
+	Socket clientSocket;
+	BufferedReader in;
+	PrintWriter out;
 
 	/**
 	 * Read data of input name 
@@ -29,6 +35,33 @@ public class JSON implements FileService
 	 */
 	public ArrayList<Saleable> readData(String name) throws InventoryErrorException 
 	{
+//		try {
+//			clientSocket = new Socket("127.0.0.1", 6666);
+//			// Create some input and output network buffers to communicate back and forth with the Server 
+//			out = new PrintWriter(clientSocket.getOutputStream(), true);
+//			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+//			
+//		}
+//		catch (IOException e) 
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		String red;
+//		try {
+//			red = in.readLine();
+//			System.out.println(red);
+//		} 
+//		catch (IOException e) 
+//		{
+//			e.printStackTrace();
+//		}
+//		
+		
+		
+		
+		
 		ArrayList<Saleable> currentInventory = null;
 		//open the file to read
 		File file = new File(name);
@@ -56,6 +89,11 @@ public class JSON implements FileService
 		 */
 		public void writeData (String name, ArrayList<Saleable> inventory) throws DataHandlingException, InventoryErrorException
 		{
+			// Connect to the Remote Server on the specified IP Address and Port
+			
+			
+			
+			
 			PrintWriter pw = null;
 			
 			try 
