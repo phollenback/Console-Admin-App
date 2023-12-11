@@ -84,7 +84,7 @@ public class Inventory {
 	 * @param index where to add items to quantity
 	 * @param quantity Being manipulated at passed in index
 	 */
-	public void addItem(int index, int quantity)
+	public void readdItem(int index, int quantity)
 	{	
 		// loop over all items
 		for(Saleable item : inventoryList)
@@ -99,6 +99,16 @@ public class Inventory {
 		// add to item quantity
 		inventoryList.get(index).setQuantity(inventoryList.get(index).getQuantity() + quantity);
 		
+	}
+	
+	/**
+	 * Add a new item
+	 * @param item New item
+	 */
+	public void addNewItem(Saleable item)
+	{
+		// add new item
+		inventoryList.add(item);
 	}
 	
 	/**

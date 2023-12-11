@@ -26,14 +26,15 @@ public class StoreFront {
 		// create Inventory and cart and begin thread
 		inv = new Inventory();
 		cart = new ShoppingCart();
-		thread = new ServerThread();
-		// run thread
-		thread.run();
-		// initialize each list
+		thread = new ServerThread(inv);
+				// initialize each list
 		try
 		{
 			// trys to gather inventory
 			inv.initializeInventory();
+			// run thread
+			thread.start();			// establish connection
+
 		}
 		catch(InventoryErrorException e)
 		{
@@ -155,14 +156,15 @@ public class StoreFront {
 		int idx = scnr.nextInt();
 		// how many are they cancelling
 		System.out.println("How many would you like to remove?");
+		
 		// gather input
 		int quantity = scnr.nextInt();
 			
 		// remove number of items from cart
-		cart.removeFromCart(idx,quantity);
+		cart.removeFromCart(idx, quantity);
 			
 		// add to inventory
-		inv.addItem(idx, quantity);
+		inv.readdItem(idx, quantity);
 		
 	}
 	
@@ -178,8 +180,13 @@ public class StoreFront {
 		StoreFront store = new StoreFront();
 		// initialize store
 		store.initializeStore();
+		
+		
+	
 		// welcome message
 		System.out.println("Welcome to Phoenix's very own weapon store.");
+
+	
 		// show menu
 		store.printMenu();
 		//gather input
@@ -246,11 +253,7 @@ public class StoreFront {
 						// save back to file
 						store.inv.saveInventory();
 					} 
-					catch (DataHandlingException e)
-					{
-						System.out.println(e.getMessage());
-					}
-					catch(InventoryErrorException e)
+					catch (DataHandlingException | InventoryErrorException e )
 					{
 						System.out.println(e.getMessage());
 					}

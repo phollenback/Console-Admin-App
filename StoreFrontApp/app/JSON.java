@@ -35,29 +35,9 @@ public class JSON implements FileService
 	 */
 	public ArrayList<Saleable> readData(String name) throws InventoryErrorException 
 	{
-//		try {
-//			clientSocket = new Socket("127.0.0.1", 6666);
-//			// Create some input and output network buffers to communicate back and forth with the Server 
-//			out = new PrintWriter(clientSocket.getOutputStream(), true);
-//			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//			
-//		}
-//		catch (IOException e) 
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		String red;
-//		try {
-//			red = in.readLine();
-//			System.out.println(red);
-//		} 
-//		catch (IOException e) 
-//		{
-//			e.printStackTrace();
-//		}
-//		
+
+		
+		
 		
 		
 		
